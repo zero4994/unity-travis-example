@@ -18,7 +18,7 @@ jobs:
       env: BUILD_TARGET=StandaloneLinux64
       script:
         - "chmod +x ./ci/* && ./ci/docker_build.sh"
-        - "mkdir ./Builds/"
+        - "chmod -R +rw ./Builds/"
         - "cd ./Builds/"
         - "zip -r StandaloneLinux64.zip ./StandaloneLinux64/"
       deploy:
@@ -32,7 +32,7 @@ jobs:
       env: BUILD_TARGET=StandaloneOSX
       script:
         - "chmod +x ./ci/* && ./ci/docker_build.sh"
-        - "mkdir ./Builds/"
+        - "chmod -R +rw ./Builds/"
         - "cd ./Builds/"
         - "zip -r StandaloneOSX.zip ./StandaloneOSX/"
       deploy:
@@ -46,7 +46,7 @@ jobs:
       env: BUILD_TARGET=StandaloneWindows64
       script:
         - "chmod +x ./ci/* && ./ci/docker_build.sh"
-        - "mkdir ./Builds/"
+        - "chmod -R +rw ./Builds/"
         - "cd ./Builds/"
         - "zip -r StandaloneWindows64.zip ./StandaloneWindows64/"
       deploy:
@@ -60,7 +60,7 @@ jobs:
       env: BUILD_TARGET=WebGL
       script:
         - "chmod +x ./ci/* && ./ci/docker_build.sh"
-        - "mkdir ./Builds/"
+        - "chmod -R +rw ./Builds/"
         - "cd ./Builds/"
         - "zip -r WebGL.zip ./WebGL/"
       deploy:

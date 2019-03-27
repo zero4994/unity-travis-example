@@ -1,0 +1,72 @@
+sudo: required
+language: bash
+env:
+  global:
+    - IMAGE_NAME=gableroux/unity3d:2018.3.7f1
+    - BUILD_NAME=unity-example-travis
+services:
+  - docker
+before_install:
+  - openssl aes-256-cbc -K $encrypted_40e7ca6c3500_key -iv
+    $encrypted_40e7ca6c3500_iv -in Unity_v2018.x.ulf.enc -out ./Unity_v2018.x.ulf -d
+  - export UNITY_LICENSE_CONTENT=`cat Unity_v2018.x.ulf`
+  - rm Unity_v2018.x.ulf
+  - docker pull $IMAGE_NAME
+jobs:
+  include:
+    - stage: build
+      env: BUILD_TARGET=StandaloneLinux64
+      script:
+        - "chmod +x ./ci/* && ./ci/docker_build.sh"
+        - "mkdir ./Builds/"
+        - "cd ./Builds/"
+        - "zip -r StandaloneLinux64.zip ./StandaloneLinux64/"
+      deploy:
+        provider: releases
+        api_key: $GITHUB_API_KEY
+        file: StandaloneLinux64.zip
+        skip_cleanup: true
+        on:
+          tags: true
+    - stage: build
+      env: BUILD_TARGET=StandaloneOSX
+      script:
+        - "chmod +x ./ci/* && ./ci/docker_build.sh"
+        - "mkdir ./Builds/"
+        - "cd ./Builds/"
+        - "zip -r StandaloneOSX.zip ./StandaloneOSX/"
+      deploy:
+        provider: releases
+        api_key: $GITHUB_API_KEY
+        file: StandaloneOSX.zip
+        skip_cleanup: true
+        on:
+          tags: true
+    - stage: build
+      env: BUILD_TARGET=StandaloneWindows64
+      script:
+        - "chmod +x ./ci/* && ./ci/docker_build.sh"
+        - "mkdir ./Builds/"
+        - "cd ./Builds/"
+        - "zip -r StandaloneWindows64.zip ./StandaloneWindows64/"
+      deploy:
+        provider: releases
+        api_key: $GITHUB_API_KEY
+        file: StandaloneWindows64.zip
+        skip_cleanup: true
+        on:
+          tags: true
+    - stage: build
+      env: BUILD_TARGET=WebGL
+      script:
+        - "chmod +x ./ci/* && ./ci/docker_build.sh"
+        - "mkdir ./Builds/"
+        - "cd ./Builds/"
+        - "zip -r WebGL.zip ./WebGL/"
+      deploy:
+        provider: releases
+        api_key: $GITHUB_API_KEY
+        file: WebGL.zip
+        skip_cleanup: true
+        on:
+          tags: true
